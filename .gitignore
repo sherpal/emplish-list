@@ -10,6 +10,6 @@ target
 gradlew
 gradlew.bat
 gradle
-*/frontend-scala.js
-*/frontend-fastopt.js.map
-*/frontend-fullopt.js.map
+public/javascripts/frontend-scala.js
+public/javascripts/frontend-fastopt.js.map
+public/javascripts/frontend-fullopt.js.map
