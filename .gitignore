@@ -1,0 +1,15 @@
+logs
+target
+/.idea
+/.idea_modules
+/.classpath
+/.project
+/.settings
+/RUNNING_PID
+/.g8
+gradlew
+gradlew.bat
+gradle
+*/frontend-scala.js
+*/frontend-fastopt.js.map
+*/frontend-fullopt.js.map

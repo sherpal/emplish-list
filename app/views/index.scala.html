@@ -1,0 +1,15 @@
+@import database.Recipe
+
+@(recipes: Seq[Recipe])
+
+@main("Welcome to EmplishList") {
+  <h1>Welcome to EmplishList!</h1>
+
+  <button>New</button>
+
+  <ul>
+    @for(recipe <- recipes) {
+      @recipetemplate(recipe)
+    }
+  </ul>
+}
