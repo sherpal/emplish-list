@@ -54,8 +54,11 @@ lazy val playProject = (project in file(".")).enablePlugins(PlayScala)
 lazy val `frontend` = project.in(file("./frontend"))
   .enablePlugins(ScalaJSPlugin)
   .settings(
+    resolvers += Resolver.bintrayRepo("hmil", "maven"),
     libraryDependencies ++= Seq(
-      "org.scala-js" %%% "scalajs-dom" % "0.9.5"
+      "org.scala-js" %%% "scalajs-dom" % "0.9.5",
+      "com.raquo" %%% "laminar" % "0.7",
+      "fr.hmil" %%% "roshttp" % "2.2.4",
     ),
     scalaJSUseMainModuleInitializer := true,
     copyFrontendFastOpt := {
@@ -73,9 +76,9 @@ fastOptCompileCopy := {
   val frontendDirectory = os.Path((copyFrontendFastOpt in `frontend`).value.getAbsoluteFile)
   val base = os.Path(baseDirectory.value.getAbsolutePath)
   os.list(base / copyPath)
-    .filter(path => path.endsWith(os.RelPath("frontend.scala.js")) || path.endsWith(os.RelPath("frontend-fastopt.js.map")))
+    .filter(path => path.endsWith(os.RelPath("frontend-scala.js")) || path.endsWith(os.RelPath("frontend-fastopt.js.map")))
     .foreach(os.remove)
-  os.copy(frontendDirectory, base / copyPath / "frontend.scala.js")
+  os.copy(frontendDirectory, base / copyPath / "frontend-scala.js")
   os.copy(
     frontendDirectory / os.up / "frontend-fastopt.js.map",
     base / copyPath / "frontend-fastopt.js.map"
