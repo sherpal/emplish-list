@@ -14,4 +14,8 @@ final class DBInitializer @Inject()(initializer: DatabaseInitializer, cc: Contro
     initializer.initialize().map(_ => Ok("Initialized"))
   }
 
+  def reset(): Action[AnyContent] = Action.async {
+    initializer.reset().map(_ => Ok("db reset"))
+  }
+
 }

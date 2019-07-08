@@ -21,5 +21,6 @@ final class DatabaseInitializer @Inject()(protected val dbConfigProvider: Databa
   private def queries = tables.map(_._2.schema)
 
   def initialize(): Future[Unit] = db.run(DBIO.seq(queries.tail.foldLeft(queries.head)(_ ++ _).create))
+  def reset(): Future[Unit] = db.run(DBIO.seq(queries.reverse.map(_.drop): _*))
 
 }

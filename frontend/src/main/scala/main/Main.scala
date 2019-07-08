@@ -1,6 +1,7 @@
 package main
 
 import index.IndexMain
+import newrecipe.NewRecipeMain
 import org.scalajs.dom
 import org.scalajs.dom.html
 import utils.constants.Constants
@@ -12,9 +13,11 @@ object Main {
 
   def main(args: Array[String]): Unit = {
 
+    dom.console.log(title)
+
     title match {
-      case Constants.`welcome to emplish list` =>
-        IndexMain
+      case Constants.`welcome to emplish list` => IndexMain
+      case Constants.`new recipe`              => NewRecipeMain
       case _ =>
         dom.console.error(s"Unknown title: $title")
     }

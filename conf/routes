@@ -5,10 +5,12 @@
 
 # An example controller showing a sample home page
 GET     /                           controllers.HomeController.index
+GET     /new-recipe                 controllers.NewRecipeController.index
 
 GET     /options-lists/:name        controllers.OptionListsController.optionList(name)
 
 GET     /db/initialize              controllers.DBInitializer.initialize
+GET     /db/reset                   controllers.DBInitializer.reset
 
 # REST routes
 GET     /v1/rest/db-recipes-list    controllers.HomeController.listOfRecipes

@@ -10,7 +10,7 @@ object IndexMain {
 
   def element: ReactiveHtmlElement[html.Div] = div(
     h1(Main.title),
-    button("New"), // todo
+    a(href := "/new-recipe", "New"),
     ul(
       children <-- RecipeCalls.lisDBRecipes
     )
