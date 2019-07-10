@@ -22,5 +22,15 @@ final class DatabaseInitializer @Inject()(protected val dbConfigProvider: Databa
 
   def initialize(): Future[Unit] = db.run(DBIO.seq(queries.tail.foldLeft(queries.head)(_ ++ _).create))
   def reset(): Future[Unit] = db.run(DBIO.seq(queries.reverse.map(_.drop): _*))
+  def insertIngredients(): Future[Unit] =
+    resetIngredients().flatMap(_ =>
+      db.run(
+        PossibleIngredientTable.query ++= PossibleIngredientTable.ingredients
+      )
+    ).map(_ => Unit)
+  def resetIngredients(): Future[Unit] =
+    db.run(
+    PossibleIngredientTable.query.delete
+  ).map(_ => Unit)
 
 }

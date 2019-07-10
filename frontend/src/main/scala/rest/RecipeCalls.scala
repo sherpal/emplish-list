@@ -3,7 +3,9 @@ package rest
 import com.raquo.airstream.features.FlattenStrategy
 import com.raquo.laminar.api.L._
 import components.rowRecipe
+import models.{Recipe => ModelRecipe}
 import database.{Recipe => DBRecipe}
+import fr.hmil.roshttp.response.SimpleHttpResponse
 import monix.execution.Scheduler.Implicits.global
 import upickle.default._
 
@@ -18,5 +20,9 @@ object RecipeCalls {
   )
 
   def lisDBRecipes: EventStream[List[Element]] = dbRecipes.map(_.toList.map(rowRecipe.apply))
+
+  def postRecipe(recipe: ModelRecipe): EventStream[SimpleHttpResponse] = EventStream.fromFuture(
+    boilerplate.postObject("/v1/rest/new-recipe", recipe)
+  )
 
 }

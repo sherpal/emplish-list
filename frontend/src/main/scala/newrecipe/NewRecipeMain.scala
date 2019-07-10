@@ -4,10 +4,10 @@ import com.raquo.laminar.api.L._
 import _root_.main.Main
 import com.raquo.laminar.api.L
 import com.raquo.laminar.nodes.ReactiveHtmlElement
-import components.backToMenu
+import components.{backToMenu, ingredientList}
 import models.{Category, Recipe, Season}
 import org.scalajs.dom.html
-import rest.OptionsListCalls
+import rest.{OptionsListCalls, RecipeCalls}
 import upickle.default._
 
 object NewRecipeMain {
@@ -15,6 +15,8 @@ object NewRecipeMain {
   implicit val owner: L.Owner = new Owner {}
 
   private val recipe = Var[Recipe](Recipe(0, "", Seq(), null, null, ""))
+
+  ingredientList.$ingredients.foreach(ingredients => recipe.update(_.copy(ingredients = ingredients)))
 
   def element: ReactiveHtmlElement[html.Div] = {
     val categories = OptionsListCalls.categories
@@ -53,6 +55,7 @@ object NewRecipeMain {
         ),
         div(label("Category "), categorySelect),
         div(label("Season "), seasonSelect),
+        child <-- OptionsListCalls.ingredients.map(_.toList).map(ingredientList.apply(recipe, _)),
         div(
           h3("Description"),
           textArea(
@@ -61,7 +64,8 @@ object NewRecipeMain {
               onInput.mapTo(thisNode.ref.value).map(desc => recipe.now.copy(description = desc)) --> recipe.writer
             )
           )
-        )
+        ),
+        onSubmit.mapTo(recipe.now).preventDefault --> { r => RecipeCalls.postRecipe(r) }
       ),
       pre(
         child <-- recipe.signal.map(write[Recipe](_, indent = 2))

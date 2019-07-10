@@ -10,7 +10,7 @@ final case class Recipe(
                        ) {
   def toDBRecipe: (DBRecipe, Seq[DBIngredient]) = (
     DBRecipe(id, name, category.name, season.name, description),
-    ingredients.map(i => DBIngredient(i.id, i.name, i.unit.name, id))
+    ingredients.map(i => DBIngredient(i.id, i.name, i.qt, i.unit.name, id))
   )
 }
 

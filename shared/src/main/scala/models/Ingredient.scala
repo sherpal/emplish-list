@@ -1,6 +1,6 @@
 package models
 
-final case class Ingredient(id: Int, name: String, unit: MeasureUnit) extends Ordered[Ingredient] {
+final case class Ingredient(id: Int, name: String, qt: Double, unit: MeasureUnit) extends Ordered[Ingredient] {
   def compare(that: Ingredient): Int = this.name compare that.name
 }
 

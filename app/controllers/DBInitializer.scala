@@ -18,4 +18,12 @@ final class DBInitializer @Inject()(initializer: DatabaseInitializer, cc: Contro
     initializer.reset().map(_ => Ok("db reset"))
   }
 
+  def insertIngredients(): Action[AnyContent] = Action.async {
+    initializer.insertIngredients().map(_ => Ok("ingredients inserted"))
+  }
+
+  def deleteIngredients(): Action[AnyContent] = Action.async {
+    initializer.resetIngredients().map(_ => Ok("ingredients reset"))
+  }
+
 }

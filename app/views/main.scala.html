@@ -4,7 +4,10 @@
  * two arguments, a `String` for the title of the page and an `Html`
  * object to insert into the body of the page.
  *@
-@(title: String)
+
+@import play.filters.csrf.CSRF
+
+@(title: String, maybeToken: Option[CSRF.Token] = None)
 
 <!DOCTYPE html>
 <html lang="en">
@@ -20,7 +23,13 @@
          * the page content. *@
         <div id="root"></div>
 
-      <script src="@routes.Assets.versioned("javascripts/main.js")" type="text/javascript"></script>
-      <script src="@routes.Assets.versioned("javascripts/frontend-scala.js")" type="text/javascript"></script>
+        @if(maybeToken.isDefined) {
+        <script type="text/javascript">
+            tokenName = "@maybeToken.get.name"
+            tokenValue = "@maybeToken.get.value"
+        </script>
+        }
+        <script src="@routes.Assets.versioned("javascripts/main.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.versioned("javascripts/frontend-scala.js")" type="text/javascript"></script>
     </body>
 </html>
