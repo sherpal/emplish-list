@@ -1,0 +1,39 @@
+@import play.api.data.FormError
+
+@(title: String, form: Form[Recipe], postUrl: Call, formErrors: Seq[FormError] = List())(
+seasons: Seq[Season], categories: Seq[Category]
+)(
+implicit request: MessagesRequestHeader
+)
+
+@main(title) {
+
+<div id="nav"></div>
+
+@request.flash.data.map{ case (name, value) =>
+    <div>@name: @value</div>
+}
+
+@for(error <- formErrors) {
+    <div>@error.toString</div>
+}
+
+@helper.form(postUrl) {
+@helper.CSRF.formField
+
+<input type="hidden" name="id" value="0" />
+
+@helper.inputText(form("name"))
+
+<div id="ingredients-form"></div>
+
+@helper.select(form("season.name"), seasons.map(_.name).zip(seasons.map(_.name)))
+
+@helper.select(form("category.name"), categories.map(_.name).zip(categories.map(_.name)))
+
+@helper.textarea(form("description"))
+
+<button>Add recipe</button>
+
+}
+}

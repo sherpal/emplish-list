@@ -1,0 +1,7 @@
+@import play.filters.csrf.CSRF
+
+@(title: String, maybeToken: Option[CSRF.Token] = None)
+
+@main(title, maybeToken) {
+<div id="root"></div>
+}

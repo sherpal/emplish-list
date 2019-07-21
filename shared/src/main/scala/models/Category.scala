@@ -14,5 +14,9 @@ object Category {
   def categories: Seq[Category] = Seq[Category](Desert, MainCourse).sorted
   def category(name: String): Option[Category] = categories.find(name == _.name)
 
+  def apply(name: String): Category = category(name).get
+
+  def unapply(arg: Category): Option[String] = Some(arg.name)
+
   implicit final val readWriter: ReadWriter[Category] = readwriter[String].bimap(_.name, category(_).get)
 }

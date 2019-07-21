@@ -7,7 +7,7 @@
 
 @import play.filters.csrf.CSRF
 
-@(title: String, maybeToken: Option[CSRF.Token] = None)
+@(title: String, maybeToken: Option[CSRF.Token] = None)(content: Html)
 
 <!DOCTYPE html>
 <html lang="en">
@@ -21,7 +21,7 @@
     <body>
         @* And here's where we render the `Html` object containing
          * the page content. *@
-        <div id="root"></div>
+        @content
 
         @if(maybeToken.isDefined) {
         <script type="text/javascript">

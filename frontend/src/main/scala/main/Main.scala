@@ -4,6 +4,7 @@ import index.IndexMain
 import newrecipe.NewRecipeMain
 import org.scalajs.dom
 import org.scalajs.dom.html
+import org.scalajs.dom.raw.HTMLElement
 import rest.Token
 import utils.constants.Constants
 
@@ -14,6 +15,8 @@ object Main {
 
   lazy val title: String = dom.document.title
   lazy val root: html.Div = dom.document.getElementById("root").asInstanceOf[html.Div]
+
+  def elementById[T <: HTMLElement](id: String): T = dom.document.getElementById(id).asInstanceOf[T]
 
   lazy val maybeToken: Option[Token] =
     Try(Token(GlobalScope.tokenName, GlobalScope.tokenValue)).map(Some(_)).getOrElse(None)

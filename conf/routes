@@ -6,6 +6,7 @@
 # An example controller showing a sample home page
 GET     /                           controllers.HomeController.index
 GET     /new-recipe                 controllers.NewRecipeController.index
+POST    /new-recipe                 controllers.NewRecipeController.postNewRecipe
 
 GET     /options-lists/:name        controllers.OptionListsController.optionList(name)
 
@@ -16,7 +17,6 @@ GET     /db/reset-ingredients       controllers.DBInitializer.deleteIngredients
 
 # REST routes
 GET     /v1/rest/db-recipes-list    controllers.HomeController.listOfRecipes
-POST    /v1/rest/new-recipe         controllers.NewRecipeController.postNewRecipe
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

@@ -23,7 +23,7 @@ final class HomeController @Inject()(protected val dbConfigProvider: DatabaseCon
   extends AbstractController(cc) with HasDatabaseConfigProvider[JdbcProfile] {
 
   def index(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.main(Constants.`welcome to emplish list`))
+    Ok(views.html.basiclaminar(Constants.`welcome to emplish list`))
   }
 
   implicit val recipeWrites: Writes[Seq[Recipe]] = UpickleJson.writes[Seq[Recipe]]
