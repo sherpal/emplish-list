@@ -8,6 +8,9 @@ GET     /                           controllers.HomeController.index
 GET     /new-recipe                 controllers.NewRecipeController.index
 POST    /new-recipe                 controllers.NewRecipeController.postNewRecipe
 
+POST    /delete-recipe/:id          controllers.RecipeController.deleteRecipe(id: Int)
+
+GET     /recipe/:recipeName         controllers.RecipeController.displayRecipe(recipeName)
 GET     /options-lists/:name        controllers.OptionListsController.optionList(name)
 
 GET     /db/initialize              controllers.DBInitializer.initialize

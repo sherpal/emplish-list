@@ -2,4 +2,4 @@
 
 @(recipe: Recipe)
 
-<li>@recipe.name (todo: button to edit)</li>
+<li><a href="@routes.RecipeController.displayRecipe(recipe.name)">@recipe.name</a></li>

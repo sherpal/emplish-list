@@ -28,13 +28,9 @@ final class NewRecipeController @Inject()(protected val dbConfigProvider: Databa
 
   implicit val recipeWrites: Reads[Recipe] = UpickleJson.reads[Recipe]
 
-  def postNewRecipe() = Action.async { implicit request =>
+  def postNewRecipe(): Action[AnyContent] = Action.async { implicit request =>
 
     val errorFunction = { formWithErrors: Form[Recipe] =>
-      // This is the bad case, where the form had validation errors.
-      // Let's show the user the form again, with the errors highlighted.
-      // Note how we pass the form with errors to the template.
-
       Future {
         BadRequest(views.html.recipeform(
           Constants.`new recipe`, RecipeForm.form, postUrl, formErrors = formWithErrors.errors
@@ -45,8 +41,6 @@ final class NewRecipeController @Inject()(protected val dbConfigProvider: Databa
     }
 
     val successFunction = { recipe: Recipe =>
-      // This is the good case, where the form was successfully parsed as a Data object.
-
       recipeDBModel.newRecipe(recipe)
           .map(_ => Redirect(routes.NewRecipeController.index()).flashing("info" -> s"Recipe added! $recipe"))
 

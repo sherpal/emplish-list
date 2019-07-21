@@ -25,4 +25,8 @@ object RecipeCalls {
     boilerplate.postObject("/v1/rest/new-recipe", recipe)
   )
 
+  def deleteRecipe(recipeId: Int): EventStream[SimpleHttpResponse] = EventStream.fromFuture(
+    boilerplate.postObject(s"/delete-recipe/$recipeId", "")
+  )
+
 }

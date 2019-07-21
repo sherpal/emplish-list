@@ -7,7 +7,7 @@
 
 @import play.filters.csrf.CSRF
 
-@(title: String, maybeToken: Option[CSRF.Token] = None)(content: Html)
+@(title: String, maybeToken: Option[CSRF.Token] = None, needJS: Boolean = true)(content: Html)
 
 <!DOCTYPE html>
 <html lang="en">
@@ -30,6 +30,9 @@
         </script>
         }
         <script src="@routes.Assets.versioned("javascripts/main.js")" type="text/javascript"></script>
-        <script src="@routes.Assets.versioned("javascripts/frontend-scala.js")" type="text/javascript"></script>
+
+        @if(needJS) {
+            <script src="@routes.Assets.versioned("javascripts/frontend-scala.js")" type="text/javascript"></script>
+        }
     </body>
 </html>

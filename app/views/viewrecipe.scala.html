@@ -1,0 +1,39 @@
+@import models.Recipe
+@import utils.constants.Constants
+@import play.filters.csrf.CSRF
+
+
+@(recipe: Recipe, token: CSRF.Token)
+
+@main(Constants.`recipe`, Some(token)) {
+<h1>Recipe @recipe.name</h1>
+
+<nav>
+    <a href="@routes.HomeController.index()">Back to menu</a>
+</nav>
+
+<h2>Ingredients</h2>
+<dl>
+    @for(ingredient <- recipe.ingredients) {
+        @ingredienttemplate(ingredient)
+    }
+</dl>
+
+<h2>Others</h2>
+
+<dl>
+    <dt>Season</dt><dd>@recipe.season.name</dd>
+    <dt>Category</dt><dd>@recipe.category.name</dd>
+</dl>
+
+<h2>Description</h2>
+
+<pre>@recipe.description</pre>
+
+<button id="delete">Delete recipe</button>
+
+<script type="text/javascript">
+    recipeId = @recipe.id
+</script>
+
+}

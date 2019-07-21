@@ -5,6 +5,6 @@ import database.Recipe
 
 object rowRecipe {
 
-  def apply(recipe: Recipe): Element = li(recipe.name)
+  def apply(recipe: Recipe): Element = li(a(href := s"/recipe/${recipe.name}", recipe.name))
 
 }

@@ -5,16 +5,6 @@ object RecipeForm {
   import play.api.data.Form
   import play.api.data.format.Formats.doubleFormat
 
-
-  /**
-    * (
-    * id: Int, name: String,
-    * ingredients: Seq[Ingredient],
-    * category: Category, season: Season,
-    * description: String
-    * )
-    */
-
   private val unitMapper = mapping("name" -> nonEmptyText)(MeasureUnit.apply)(MeasureUnit.unapply)
 
   private val ingredientMapping = mapping(
@@ -23,6 +13,7 @@ object RecipeForm {
     "qt" -> of[Double],
     "unit" -> unitMapper
   )(Ingredient.apply)(Ingredient.unapply)
+    .verifying("Quantity of ingredients must be positive", _.qt > 0)
 
   private val seasonMapper = mapping("name" -> nonEmptyText)(Season.apply)(Season.unapply)
 
@@ -36,6 +27,9 @@ object RecipeForm {
       "category" -> categoryMapper, "season" -> seasonMapper,
       "description" -> text
     )(Recipe.apply)(Recipe.unapply)
+      .verifying(
+        "Ingredients must be distinct", !_.ingredients.groupBy(_.name).exists(_._2.nonEmpty)
+      )
   )
 
 }

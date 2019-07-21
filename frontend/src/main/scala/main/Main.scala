@@ -5,6 +5,7 @@ import newrecipe.NewRecipeMain
 import org.scalajs.dom
 import org.scalajs.dom.html
 import org.scalajs.dom.raw.HTMLElement
+import recipe.RecipeMain
 import rest.Token
 import utils.constants.Constants
 
@@ -28,6 +29,7 @@ object Main {
     title match {
       case Constants.`welcome to emplish list` => IndexMain
       case Constants.`new recipe`              => NewRecipeMain
+      case Constants.`recipe`                  => RecipeMain
       case _ =>
         dom.console.error(s"Unknown title: $title")
     }
