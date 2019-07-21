@@ -36,7 +36,7 @@ final class RecipeDBModel @Inject()(protected val dbConfigProvider: DatabaseConf
   def newRecipe(recipe: ModelRecipe): Future[Unit] = {
     val (dbRecipe, dbIngredients) = recipe.toDBRecipe
 
-    db.run(RecipeTable.query += dbRecipe)
+    db.run((RecipeTable.query returning RecipeTable.query.map(_.id)) += dbRecipe)
       .map(idx => dbIngredients.map(_.copy(recipeId = idx)))
       .map(IngredientTable.query ++= _)
       .flatMap(db.run)

@@ -28,7 +28,7 @@ object RecipeForm {
       "description" -> text
     )(Recipe.apply)(Recipe.unapply)
       .verifying(
-        "Ingredients must be distinct", !_.ingredients.groupBy(_.name).exists(_._2.nonEmpty)
+        "Ingredients must be distinct", !_.ingredients.groupBy(_.name).exists(_._2.tail.nonEmpty)
       )
   )
 
