@@ -1,8 +1,9 @@
 package controllers
 
 import javax.inject.Inject
+import models.exceptions.RecipeAlreadyExist
 import models.{Category, Recipe, RecipeDBModel, RecipeForm, Season}
-import play.api.data.Form
+import play.api.data.{Form, FormError}
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.libs.json._
 import play.api.mvc._
@@ -43,16 +44,19 @@ final class NewRecipeController @Inject()(protected val dbConfigProvider: Databa
     val successFunction = { recipe: Recipe =>
       recipeDBModel.newRecipe(recipe)
           .map(_ => Redirect(routes.NewRecipeController.index()).flashing("info" -> s"Recipe added! $recipe"))
-
+        .recover {
+          case _: RecipeAlreadyExist =>
+            BadRequest(views.html.recipeform(
+              Constants.`new recipe`, RecipeForm.form, postUrl,
+              formErrors = List(FormError("recipe-exists", s"Recipe `${recipe.name}` already exists."))
+            )(
+              Season.seasons, Category.categories
+            ))
+        }
     }
 
     val formValidationResult = RecipeForm.form.bindFromRequest
     formValidationResult.fold(errorFunction, successFunction)
   }
-
-//    Action(parse.json[Recipe]).async { implicit request: Request[Recipe] =>
-//    recipeDBModel.newRecipe(request.body)
-//      .map(_ => Ok("recipe added"))
-//  }
 
 }

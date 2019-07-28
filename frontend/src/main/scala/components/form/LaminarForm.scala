@@ -1,7 +1,9 @@
 package components.form
 
 import com.raquo.laminar.api.L._
-import models.Ingredient
+import com.raquo.laminar.lifecycle.NodeDidMount
+import org.scalajs.dom.{html => domhtml}
+import models.{Category, Ingredient, Season}
 
 object LaminarForm {
 
@@ -22,20 +24,42 @@ object LaminarForm {
     `type` := "text", disabled := true, name := inputName, value := content
   )
 
-  def selectInput(inputName: String)(inputId: String = inputName, displayName: String, options: List[(String, String)]): Element = dl(
+  def selectInput(inputName: String)
+                 (inputId: String = inputName.replaceAll("""\.""", "_"),
+                  displayName: String,
+                  options: List[(String, String)]): Element = dl(
     dt(label(forId := inputId, displayName)),
     dd(select(id := inputId, name := inputName, options.map {
       case (v, display) => option(value := v, display)
     }))
   )
 
-  def ingredientInput(idx: Int, possibleIngredients: List[Ingredient]): Element = {
+  def textAreaInput(inputName: String)
+                   (inputId: String = inputName.replaceAll("""\.""", "_"),
+                    displayName: String): Element = dl(
+    dt(label(forId := inputId, displayName)),
+    dd(textArea(id := inputId, name := inputName))
+  )
+
+  def ingredientInput(
+                       idx: Int, possibleIngredients: List[Ingredient],
+                       maybeStartingIngredient: Option[Ingredient] = None
+                     ): Element = {
     if (possibleIngredients.isEmpty) tr()
     else {
-      val ingredientMap = possibleIngredients.map(i => i.name -> i).toMap
-      val currentIngredient = Var(possibleIngredients.head)
+
+      val ingredients = maybeStartingIngredient match {
+        case Some(startingIngredient) => startingIngredient +: possibleIngredients.filterNot(
+            _.name == startingIngredient.name
+          )
+        case None =>
+          possibleIngredients
+      }
+
+      val ingredientMap = ingredients.map(i => i.name -> i).toMap
+      val currentIngredient = Var(ingredients.head)
       val nameSelect = select(id := s"ingredients_${idx}_name", name := s"ingredients[$idx].name",
-        possibleIngredients.map(_.name).map(n => option(value := n, n)),
+        ingredients.map(_.name).map(n => option(value := n, n)),
         inContext(thisNode =>
           onChange.mapTo(thisNode.ref.value).map(ingredientMap) --> currentIngredient.writer
         )
@@ -63,6 +87,34 @@ object LaminarForm {
 
       tr(td(nameSelect), td(quantity), td(unitName, idHiddenInput))
     }
+  }
+
+  def seasonInput(season: Season): Element = {
+    val elem = selectInput("season.name")(
+      displayName = "Season", options = Season.seasons.map(_.name).map(n => (n, n)).toList
+    )
+
+    elem.ref.lastChild.firstChild.asInstanceOf[domhtml.Select].value = season.name
+
+    elem
+  }
+
+  def categoryInput(category: Category): Element = {
+    val elem = selectInput("category.name")(
+      displayName = "Category", options = Category.categories.map(_.name).map(n => (n, n)).toList
+    )
+
+    elem.ref.lastChild.firstChild.asInstanceOf[domhtml.Select].value = category.name
+
+    elem
+  }
+
+  def descriptionInput(description: String): Element = {
+    val elem = textAreaInput("description")(displayName = "Description")
+
+    elem.ref.lastChild.firstChild.asInstanceOf[domhtml.TextArea].value = description
+
+    elem
   }
 
 }

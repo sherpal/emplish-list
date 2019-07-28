@@ -17,4 +17,6 @@ final case class Recipe(
 object Recipe {
   import upickle.default.{ReadWriter, macroRW}
   implicit final val readWriter: ReadWriter[Recipe] = macroRW
+
+  def empty: Recipe = Recipe(0, "", Nil, Category.categories.head, Season.seasons.head, "")
 }

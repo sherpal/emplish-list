@@ -7,6 +7,7 @@
 GET     /                           controllers.HomeController.index
 GET     /new-recipe                 controllers.NewRecipeController.index
 POST    /new-recipe                 controllers.NewRecipeController.postNewRecipe
+GET     /edit-recipe/:id            controllers.UpdateRecipeController.index(id: Int)
 
 POST    /delete-recipe/:id          controllers.RecipeController.deleteRecipe(id: Int)
 
